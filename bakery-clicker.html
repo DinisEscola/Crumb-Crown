@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3ecdc">
+    <meta name="description" content="Bake cookies, build a bakery empire, and begin again with golden dough.">
+    <title>Crumb & Crown — Idle Bakery</title>
+    <link rel="stylesheet" href="bakery-clicker.css">
+    <script src="bakery-clicker.js" defer></script>
+</head>
+<body>
+    <div class="game-shell">
+        <header class="topbar">
+            <button class="brand" id="brand-customize" type="button" aria-label="Customize bakery name and logo" title="Customize your bakery">
+                <span class="brand-seal" aria-hidden="true"><img class="brand-logo-art" src="Crumb%20%26%20Crown.png" alt=""><span class="brand-mark-text" id="brand-seal">C</span></span>
+                <span class="brand-name"><span id="brand-display-name">Crumb & Crown</span><small>AN IDLE BAKERY</small></span>
+            </button>
+            <div class="topbar-center"><span class="open-indicator"></span> OVEN'S WARM <span class="topbar-divider">/</span> DAY <span id="bakery-day">01</span></div>
+            <button class="account-button" id="account-button" type="button" aria-label="Open local bakery account"><span class="account-avatar" id="account-avatar">G</span><span id="account-label">GUEST SAVE</span></button>
+            <button class="credit-wallet" id="credit-wallet" type="button" aria-label="Open credit shop"><span aria-hidden="true">✦</span><strong id="credit-count">0</strong></button>
+            <button class="rebirth-button" id="rebirth-button" type="button"><span class="rebirth-icon" aria-hidden="true">↻</span><span>REBAKE<small id="rebirth-hint">START A NEW LEGACY</small></span></button>
+        </header>
+
+        <main class="game-layout" id="game">
+            <aside class="ledger" aria-label="Bakery overview">
+                <div class="ledger-heading"><span>YOUR LEDGER</span><span class="ledger-dot"></span></div>
+                <div class="balance-block"><span class="label">IN THE TILL</span><div class="balance-value"><span class="mini-cookie" aria-hidden="true">●</span><strong id="cookie-count">0</strong></div><span class="balance-note">cookies baked</span></div>
+                <div class="ledger-rule"></div>
+                <div class="ledger-stat"><span>BAKING RATE</span><strong><span id="cps-count">0</span><small> / sec</small></strong></div>
+                <div class="ledger-stat"><span>THIS BATCH</span><strong id="run-count">0</strong></div>
+                <div class="ledger-stat"><span>ALL-TIME</span><strong id="lifetime-count">0</strong></div>
+                <div class="ledger-rule"></div>
+                <div class="prestige-ledger"><span class="prestige-mark" aria-hidden="true">✦</span><div><span>GOLDEN DOUGH</span><strong id="dough-count">0</strong></div><small>+<span id="dough-bonus">0</span>%</small></div>
+                <div class="ledger-foot"><span class="save-mark" aria-hidden="true"></span><span id="save-status">SAVED LOCALLY</span></div>
+            </aside>
+
+            <section class="bakery-floor" aria-label="Cookie bakery">
+                <div class="floor-head"><div><p class="overline">THE LITTLE BAKERY</p><h1>Fresh from<br><em>the oven.</em></h1></div><div class="batch-mark"><span>BATCH</span><strong id="batch-number">01</strong></div></div>
+                <div class="oven-scene">
+                    <div class="scene-stamp">HAND<br>BAKED<br><span>✳</span></div>
+                    <div class="heat-lines" aria-hidden="true"><i></i><i></i><i></i></div>
+                    <div class="cookie-stage">
+                        <button class="big-cookie" id="cookie-button" type="button" aria-label="Bake a cookie">
+                            <span class="cookie-surface"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                        </button>
+                        <div class="cookie-shadow" aria-hidden="true"></div>
+                        <div class="click-prompt" id="click-prompt">TAP TO BAKE</div>
+                        <div class="combo-meter" id="combo-meter" aria-live="polite" hidden><span id="combo-count">STREAK 0</span><strong id="combo-multiplier">x1</strong></div>
+                    </div>
+                    <button class="golden-cookie" id="golden-cookie" type="button" aria-label="Collect the golden cookie" title="A golden cookie! Collect it for a bonus." hidden>✦</button>
+                    <div class="oven-caption"><span class="caption-line"></span><span>GOOD THINGS TAKE A LITTLE DOUGH</span><span class="caption-line"></span></div>
+                </div>
+                <div class="floor-footer"><span><span class="fresh-dot"></span> CURRENT BATCH <strong id="footer-run-count">0</strong></span><button class="daily-treat" id="daily-treat" type="button"><span aria-hidden="true">✳</span><span id="daily-treat-label">DAILY CRUMB</span><strong id="daily-treat-reward">+100</strong></button></div>
+            </section>
+
+            <aside class="right-rail" aria-label="Bakery upgrades">
+                <div class="rail-tabs" role="tablist" aria-label="Bakery panels">
+                    <button class="rail-tab active" id="shop-tab" type="button" role="tab" aria-selected="true" aria-controls="shop-panel">THE SHOP <span id="shop-count">0</span></button>
+                    <button class="rail-tab" id="achievements-tab" type="button" role="tab" aria-selected="false" aria-controls="achievements-panel">MEDALS <span id="medal-count">0</span></button>
+                    <button class="rail-tab" id="legacy-tab" type="button" role="tab" aria-selected="false" aria-controls="legacy-panel">LEGACY</button>
+                    <button class="rail-tab" id="leaderboard-tab" type="button" role="tab" aria-selected="false" aria-controls="leaderboard-panel">SCORES</button>
+                    <button class="rail-tab" id="arcade-tab" type="button" role="tab" aria-selected="false" aria-controls="arcade-panel">ARCADE</button>
+                </div>
+                <section class="shop-panel" id="shop-panel" role="tabpanel" aria-labelledby="shop-tab">
+                    <div class="panel-heading"><div><p class="overline">GROW YOUR EMPIRE</p><h2>Good company.</h2></div><span class="shop-spark" aria-hidden="true">✳</span></div>
+                    <div class="shop-list" id="shop-list"></div>
+                    <div class="click-upgrade" id="click-upgrade">
+                        <div class="upgrade-art" aria-hidden="true">✳</div><div class="upgrade-copy"><span>BETTER RECIPE</span><strong id="click-power-label">Click power +1</strong><small id="click-power-level">Recipe level 0</small></div><button class="upgrade-buy" id="click-upgrade-buy" type="button"><span id="click-upgrade-cost">25</span><small>BUY</small></button>
+                    </div>
+                </section>
+                <section class="achievements-panel" id="achievements-panel" role="tabpanel" aria-labelledby="achievements-tab" hidden>
+                    <div class="panel-heading"><div><p class="overline">A LITTLE RECOGNITION</p><h2>Good work.</h2></div><span class="shop-spark" aria-hidden="true">✳</span></div>
+                    <p class="medal-intro">Milestones earn a one-time cookie bonus. Keep your eyes on the prize.</p>
+                    <div class="medal-list" id="medal-list"></div>
+                </section>
+                <section class="legacy-panel" id="legacy-panel" role="tabpanel" aria-labelledby="legacy-tab" hidden>
+                    <div class="panel-heading"><div><p class="overline">GOLDEN DOUGH</p><h2>Keep the good stuff.</h2></div><span class="shop-spark" aria-hidden="true">✦</span></div>
+                    <p class="medal-intro">Spend Golden Dough on upgrades that stay with you through every rebake.</p>
+                    <div class="legacy-balance"><span>AVAILABLE DOUGH</span><strong>✦ <span id="available-dough">0</span></strong></div>
+                    <div class="legacy-list" id="legacy-list"></div>
+                </section>
+                <section class="leaderboard-panel" id="leaderboard-panel" role="tabpanel" aria-labelledby="leaderboard-tab" hidden>
+                    <div class="panel-heading"><div><p class="overline">YOUR BAKERY, YOUR RECORDS</p><h2>Hall of fame.</h2></div><span class="shop-spark" aria-hidden="true">♛</span></div>
+                    <p class="medal-intro">Best batches on this browser. Finish a run with REBAKE to set a record.</p>
+                    <div class="leaderboard-head"><span>RANK / BAKER</span><span>BATCH</span></div>
+                    <div class="leaderboard-list" id="leaderboard-list"></div>
+                    <div class="leaderboard-foot"><span class="local-dot"></span> LOCAL SCORES · SAVED ON THIS DEVICE</div>
+                </section>
+                <section class="arcade-panel" id="arcade-panel" role="tabpanel" aria-labelledby="arcade-tab" hidden>
+                    <div class="panel-heading"><div><p class="overline">A LITTLE BREAK, A LITTLE DOUGH</p><h2>Play for credits.</h2></div><span class="shop-spark" aria-hidden="true">✦</span></div>
+                    <div class="arcade-balance"><span>YOUR CREDITS</span><strong>✦ <span id="arcade-credit-count">0</span></strong><small>Spend them in the Credit Shop.</small></div>
+                    <div class="arcade-games" role="tablist" aria-label="Mini games">
+                        <button class="arcade-game-tab active" id="chip-dash-tab" type="button" role="tab" aria-selected="true" aria-controls="chip-dash-game">CHIP DASH</button>
+                        <button class="arcade-game-tab" id="memory-tab" type="button" role="tab" aria-selected="false" aria-controls="memory-game">COOKIE MEMORY</button>
+                    </div>
+                    <section class="mini-game" id="chip-dash-game" role="tabpanel" aria-labelledby="chip-dash-tab">
+                        <div class="mini-game-heading"><div><strong>Catch the chocolate chip.</strong><small>30 seconds · each catch earns points</small></div><span class="mini-timer" id="chip-timer">30</span></div>
+                        <div class="chip-board" id="chip-board" aria-label="Chocolate chip game board"></div>
+                        <div class="mini-game-footer"><span>POINTS <strong id="chip-score">0</strong></span><span>BEST <strong id="chip-best">0</strong></span></div>
+                        <button class="mini-start" id="chip-start" type="button">START CHIP DASH <span>↗</span></button>
+                    </section>
+                    <section class="mini-game" id="memory-game" role="tabpanel" aria-labelledby="memory-tab" hidden>
+                        <div class="mini-game-heading"><div><strong>Find the matching cookies.</strong><small>Six pairs · fewer turns earn more</small></div><span class="mini-timer" id="memory-pairs">6 PAIRS</span></div>
+                        <div class="memory-board" id="memory-board" aria-label="Cookie memory cards"></div>
+                        <div class="mini-game-footer"><span>MOVES <strong id="memory-moves">0</strong></span><span>PAIRS <strong id="memory-matched">0/6</strong></span></div>
+                        <button class="mini-start" id="memory-start" type="button">SHUFFLE A NEW PUZZLE <span>↻</span></button>
+                    </section>
+                    <p class="arcade-daily">ARCADE CREDITS EARNED <strong id="arcade-earned-today">0</strong></p>
+                </section>
+                <div class="rail-note"><span class="note-star">✳</span><span>Every great empire<br>starts with one cookie.</span></div>
+            </aside>
+        </main>
+    </div>
+
+    <dialog class="rebirth-dialog" id="rebirth-dialog" aria-labelledby="rebirth-title">
+        <button class="dialog-close" id="rebirth-close" type="button" aria-label="Close rebirth dialog">×</button>
+        <div class="dialog-emblem" aria-hidden="true">✦</div>
+        <p class="overline">THE NEXT CHAPTER</p>
+        <h2 id="rebirth-title">A fresh start.<br><em>A golden legacy.</em></h2>
+        <p class="dialog-copy">Close this bakery and start from scratch. Your golden dough stays forever, making every future batch <strong id="dialog-bonus">0%</strong> more productive.</p>
+        <div class="rebirth-preview"><span>YOU'LL EARN</span><strong>✦ <span id="rebirth-gain">0</span> GOLDEN DOUGH</strong><small>Based on cookies baked this batch</small></div>
+        <button class="confirm-rebirth" id="confirm-rebirth" type="button">BEGIN A NEW LEGACY <span>↗</span></button>
+        <p class="dialog-footnote">Your medals and golden dough are kept. Everything else begins again.</p>
+    </dialog>
+    <dialog class="brand-dialog" id="brand-dialog" aria-labelledby="brand-title">
+        <button class="dialog-close" id="brand-close" type="button" aria-label="Close bakery customization">×</button>
+        <div class="brand-preview"><span class="brand-seal" aria-hidden="true"><img class="brand-logo-art" src="Crumb%20%26%20Crown.png" alt=""><span class="brand-mark-text" id="brand-preview-seal">C</span></span><span id="brand-preview-name">Crumb & Crown</span></div>
+        <p class="overline">MAKE IT YOURS</p>
+        <h2 id="brand-title">Name your bakery.</h2>
+        <label class="brand-field" for="bakery-name-input">BAKERY NAME<input id="bakery-name-input" type="text" maxlength="24" placeholder="Crumb & Crown" autocomplete="off"></label>
+        <label class="brand-field" for="bakery-logo-input">LOGO MARK<input id="bakery-logo-input" type="text" maxlength="4" placeholder="C" autocomplete="off"></label>
+        <button class="confirm-rebirth" id="save-brand" type="button">SAVE YOUR BRAND <span>↗</span></button>
+    </dialog>
+    <dialog class="account-dialog" id="account-dialog" aria-labelledby="account-title">
+        <button class="dialog-close" id="account-close" type="button" aria-label="Close account dialog">×</button>
+        <p class="overline">BAKER PROFILE</p>
+        <h2 id="account-title">Keep your progress.</h2>
+        <p class="account-local-note">Create a username and password to keep a separate bakery save on this computer. These accounts are local and are not synced to the internet.</p>
+        <label class="brand-field" for="account-username">USERNAME<input id="account-username" type="text" minlength="3" maxlength="24" autocomplete="username" placeholder="3 to 24 characters"></label>
+        <label class="brand-field" for="account-password">PASSWORD<input id="account-password" type="password" minlength="10" maxlength="128" autocomplete="current-password" placeholder="At least 10 characters"></label>
+        <div class="account-actions"><button class="account-action secondary" id="account-register" type="button">CREATE ACCOUNT</button><button class="account-action primary" id="account-login" type="button">LOG IN</button></div>
+        <button class="account-logout" id="account-logout" type="button" hidden>LOG OUT AND RETURN TO GUEST</button>
+        <p class="account-notice" id="account-notice" role="status" aria-live="polite"></p>
+    </dialog>
+    <dialog class="credits-dialog" id="credits-dialog" aria-labelledby="credits-title">
+        <button class="dialog-close" id="credits-close" type="button" aria-label="Close credit shop">×</button>
+        <p class="overline">THE CREDIT COUNTER</p>
+        <h2 id="credits-title">A little extra sparkle.</h2>
+        <div class="credits-balance"><span>YOUR BALANCE</span><strong>✦ <span id="wallet-credit-count">0</span> CREDITS</strong></div>
+        <p class="credit-shop-label">BAKERY COSMETICS</p>
+        <div class="credit-store-list" id="credit-store-list"></div>
+        <div class="custom-art-box"><div><strong>Your own cookie art</strong><small>Choose a PNG, JPG, or WebP from cookie-designs.</small></div><input id="cookie-art-input" type="file" accept="image/png,image/jpeg,image/webp" hidden><button class="art-upload" id="upload-cookie-art" type="button">UPLOAD IMAGE</button><button class="art-reset" id="reset-cookie-art" type="button" hidden>REMOVE</button></div>
+        <p class="credit-shop-label money-label">CREDIT PACKS</p>
+        <div class="credit-packs">
+            <div><span>100 credits</span><strong>$0.99</strong><button type="button" disabled>NOT CONNECTED</button></div>
+            <div><span>600 credits</span><strong>$4.99</strong><button type="button" disabled>NOT CONNECTED</button></div>
+            <div><span>1,500 credits</span><strong>$9.99</strong><button type="button" disabled>NOT CONNECTED</button></div>
+        </div>
+        <p class="payment-note">Payment is a preview only. Checkout and credit delivery are not connected.</p>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
